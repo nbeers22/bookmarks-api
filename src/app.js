@@ -4,7 +4,7 @@ const morgan = require('morgan');
 const cors = require('cors');
 const helmet = require('helmet');
 const logger = require('./logger');
-const { NODE_ENV } = require('./config');
+const { NODE_ENV, API_TOKEN } = require('./config');
 const bookmarkRouter = require('./bookmarks/bookmarkRouter');
 
 const app = express();
@@ -16,7 +16,7 @@ const morganSetting =
 
 const validateBearerToken = (req,res,next) => {
   const bearerToken = req.get('Authorization');
-  const apiToken = process.env.API_TOKEN;
+  const apiToken = process.env.API_TOKEN || API_TOKEN;
 
   if(!bearerToken || bearerToken.split(" ")[1] !== apiToken){
     logger.error("Unauthorized request to path " + req.path);

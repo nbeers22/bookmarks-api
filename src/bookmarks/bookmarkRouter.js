@@ -1,7 +1,6 @@
 const express = require('express');
 const bookmarkRouter = express.Router();
 const bodyParser = express.json();
-const uuid = require('uuid/v4');
 const logger = require('../logger.js');
 const bookmarks = require('../store.js');
 
@@ -26,7 +25,8 @@ bookmarkRouter
       return res.status(400).json({error: "POST failed"})
     }
     
-    const id = uuid();
+    // increment id based on last record
+    const id = bookmarks[bookmarks.length - 1].id + 1;
     const bookmark = {
       id,
       title,
