@@ -29,7 +29,7 @@ Run all the migrations `npm run migrate`
 
 Run a specific migration `npm run migrate -- 1`
 
-Postgres seed database `psql -U your_user_name -d your_db_name -f ./seeds/seed.blogful_articles.sql`
+Postgres seed database `psql -U your_user_name -d your_db_name -f ./seeds/seed.bookmarks.sql`
 
 ## Deploying
 
