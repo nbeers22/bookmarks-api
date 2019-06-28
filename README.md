@@ -23,6 +23,14 @@ Start nodemon for the application `npm run dev`
 
 Run the tests `npm test`
 
+Create a Postgres Database `createdb -U your_user_name your_db_name`
+
+Run all the migrations `npm run migrate`
+
+Run a specific migration `npm run migrate -- 1`
+
+Postgres seed database `psql -U your_user_name -d your_db_name -f ./seeds/seed.blogful_articles.sql`
+
 ## Deploying
 
 When your new project is ready for deployment, add a new Heroku application with `heroku create`. This will make a new git remote called "heroku" and you can then `npm run predeploy` which will run an npm audit and then `npm run deploy` which will push to this remote's master branch.
