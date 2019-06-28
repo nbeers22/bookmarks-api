@@ -1,17 +1,19 @@
-# Express API Boilerplate!
+# Bookmarks API
 
-This is a boilerplate project used for starting new projects!
+This is an API to interact with a database of bookmarks
 
 ## Set up
 
 Complete the following steps to start a new project (NEW-PROJECT-NAME):
 
-1. Clone this repository to your local machine SSH: `git clone git@github.com:nbeers22/express-api-boilerplate.git` or HTTPS: `https://github.com/nbeers22/express-api-boilerplate.git`
+1. Clone this repository to your local machine SSH: 
+`git clone git@github.com:nbeers22/bookmarks-api.git name_of_your_directory`
+or HTTPS: 
+`git clone https://github.com/nbeers22/bookmarks-api.git name_of_your_directory`
 2. `cd` into the cloned repository
 3. Make a fresh start of the git history for this project with `rm -rf .git && git init`
 4. Install the node dependencies `npm i`
-5. Move the example Environment file to `.env` that will be ignored by git and read by the express server `mv example.env .env`
-6. Edit the contents of the `package.json` to use YOUR-PROJECT-NAME instead of `"name": "express-boilerplate",`
+6. Edit the contents of the `package.json` to use YOUR-PROJECT-NAME instead of `"name": "bookmarks-api",`
 
 ## Scripts
 
