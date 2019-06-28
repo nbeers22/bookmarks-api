@@ -45,6 +45,41 @@ describe.only('Bookmarks Endpoint', () => {
           .expect(200,testBookmarks)
       });
     });
+
+    context('Given bookmarks table has no data', () => {
+
+      it('responds with status 200 and empty array', () => {
+        return supertest(app)
+          .get('/bookmarks')
+          .set(headers)
+          .expect(200,[])
+      });
+    });
   });
+
+  describe('GET /bookmarks/:id', () => {
+    
+    context('Given article with corresponding id exists in database', () => {
+
+      beforeEach('Insert test bookmarks into the db', () => {
+        return db
+          .into('bookmarks')
+          .insert(testBookmarks)
+      });
+
+      it('responds with 200 and the article with the given id', () => {
+        const articleId = 1;
+        return supertest(app)
+          .get(`/bookmarks/${articleId}`)
+          .set(headers)
+          .expect(200,testBookmarks[articleId - 1])
+      })
+    });
+    
+    context('Given article with corresponding id does not exist in database', () => {
+
+    });
+  });
+  
   
 });
