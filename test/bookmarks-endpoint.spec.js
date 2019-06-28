@@ -77,7 +77,14 @@ describe.only('Bookmarks Endpoint', () => {
     });
     
     context('Given article with corresponding id does not exist in database', () => {
-
+      
+      it('responds with 404 and error message', () => {
+        const articleId = 0;
+        return supertest(app)
+          .get(`/bookmarks/${articleId}`)
+          .set(headers)
+          .expect(404, { error: "Bookmark not found" } )
+      });
     });
   });
   

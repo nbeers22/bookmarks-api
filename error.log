@@ -6,3 +6,6 @@
 {"message":"POST to /bookmarks failed: Title missing","level":"error"}
 {"message":"Unauthorized request to path /bookmarks","level":"error"}
 {"message":"Unauthorized request to path /bookmarks","level":"error"}
+{"message":"Unauthorized request to path /bookmarks/1000000000000000000","level":"error"}
+{"message":"Bookmark not found at /bookmarks/99","level":"error"}
+{"message":"Bookmark not found at /bookmarks/0","level":"error"}
