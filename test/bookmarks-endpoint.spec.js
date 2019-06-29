@@ -88,7 +88,7 @@ describe.only('Bookmarks Endpoint', () => {
     });
   });
   
-  describe.only('POST /articles', () => {
+  describe('POST /articles', () => {
     
     it('Adds bookmark to the db, responds with 201 and new bookmark', () => {
       const newBookmark = {
@@ -120,7 +120,7 @@ describe.only('Bookmarks Endpoint', () => {
     });
   });
   
-  describe('DELETE /articles/:id', () => {
+  describe.only('DELETE /articles/:id', () => {
     
     context('Given article exists in db', () => {
 
@@ -131,18 +131,22 @@ describe.only('Bookmarks Endpoint', () => {
       });
 
       it('Deletes bookmark from the db, responds with 200 and deleted bookmark', () => {
-        const articleId = 0;
+        const articleId = 1;
         return supertest(app)
-          .get(`/bookmarks/${articleId}`)
+          .delete(`/bookmarks/${articleId}`)
           .set(headers)
-          .expect(200)
+          .expect(200, )
       });
     })
     
     context('Given article does not exists in db', () => {
 
-      it('Responds with 404 and "{ error: Bookmark not found }"', () => {
-
+      it('Responds with 404 and "Bookmark not found"', () => {
+        const articleId = 0;
+        return supertest(app)
+          .delete(`/bookmarks/${articleId}`)
+          .set(headers)
+          .expect(404, { error: "Bookmark not found" })
       });
     })
   });
