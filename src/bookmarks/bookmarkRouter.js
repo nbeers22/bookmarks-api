@@ -13,8 +13,9 @@ bookmarkRouter
       .then(bookmarks => res.json(bookmarks))
       .catch(next)
   })
-  .post( bodyParser, (req,res) => {
-    const { title, url, rating, desc = '' } = req.body;
+  .post( bodyParser, (req,res,next) => {
+    const { title, url, rating, description = '' } = req.body;
+    const knexInstance = req.app.get('db');
     
     if (!title) {
       logger.error(`POST to ${req.path} failed: Title missing`)
@@ -29,19 +30,16 @@ bookmarkRouter
       return res.status(400).json({error: "POST failed"})
     }
     
-    // increment id based on last record
-    const id = bookmarks[bookmarks.length - 1].id + 1;
     const bookmark = {
-      id,
       title,
       url,
       rating,
-      desc
+      description
     };
-    bookmarks.push(bookmark);
-
-    res.status(201).json(bookmark);
-    
+    BookmarksService.insertBookmark(knexInstance,bookmark)
+      .then(bookmark => (
+        res.status(201).json(bookmark)
+      ));
   });
 
 bookmarkRouter

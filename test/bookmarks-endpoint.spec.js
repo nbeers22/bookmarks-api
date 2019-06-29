@@ -88,5 +88,48 @@ describe.only('Bookmarks Endpoint', () => {
     });
   });
   
+  describe.only('POST /articles', () => {
+    
+    it('Adds bookmark to the db, responds with 201 and new bookmark', () => {
+      const newBookmark = {
+        title: "New Bookmark Test",
+        description: "Really cool bookmark",
+        url: "http://bookmarktest.com",
+        rating: 1
+      }
+
+      return supertest(app)
+        .post('/bookmarks')
+        .set(headers)
+        .send(newBookmark)
+        .expect(201)
+    });
+  });
   
+  describe('DELETE /articles/:id', () => {
+    
+    context('Given article exists in db', () => {
+
+      beforeEach('Insert test bookmarks into the db', () => {
+        return db
+          .into('bookmarks')
+          .insert(testBookmarks)
+      });
+
+      it('Deletes bookmark from the db, responds with 200 and deleted bookmark', () => {
+        const articleId = 0;
+        return supertest(app)
+          .get(`/bookmarks/${articleId}`)
+          .set(headers)
+          .expect(200)
+      });
+    })
+    
+    context('Given article does not exists in db', () => {
+
+      it('Responds with 404 and "{ error: Bookmark not found }"', () => {
+
+      });
+    })
+  });
 });
