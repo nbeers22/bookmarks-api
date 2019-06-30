@@ -88,7 +88,7 @@ describe.only('Bookmarks Endpoint', () => {
     });
   });
   
-  describe('POST /articles', () => {
+  describe.only('POST /articles', () => {
     
     it('Adds bookmark to the db, responds with 201 and new bookmark', () => {
       const newBookmark = {
@@ -103,6 +103,18 @@ describe.only('Bookmarks Endpoint', () => {
         .set(headers)
         .send(newBookmark)
         .expect(201)
+        .expect(res => {
+          expect(res.body.title).to.eql(newBookmark.title)
+          expect(res.body.description).to.eql(newBookmark.description)
+          expect(res.body.url).to.eql(newBookmark.url)
+          expect(res.body).to.have.property("id")
+        })
+        .then( postResponse => (
+          supertest(app)
+            .get(`/bookmarks/${postResponse.body.id}`)
+            .set(headers)
+            .expect(postResponse.body)
+        ))
     });
 
     it('responds with 400 and error msg if title is not present', () => {
@@ -120,7 +132,7 @@ describe.only('Bookmarks Endpoint', () => {
     });
   });
   
-  describe.only('DELETE /articles/:id', () => {
+  describe('DELETE /articles/:id', () => {
     
     context('Given article exists in db', () => {
 
