@@ -117,47 +117,28 @@ describe.only('Bookmarks Endpoint', () => {
         ))
     });
 
-    it('responds with 400 and error msg if title is not present', () => {
-      const newBookmark = {
-        description: "Really cool bookmark",
-        url: "http://bookmarktest.com",
-        rating: 1
-      }
+    const requiredFields = ["title", "url", "rating"];
 
-      return supertest(app)
-        .post('/bookmarks')
-        .set(headers)
-        .send(newBookmark)
-        .expect(400, {error: "POST failed"})
-    });
-    
-    it('responds with 400 and error msg if url is not present', () => {
+    requiredFields.forEach( field => {
       const newBookmark = {
         title: "My new bookmark title",
         description: "Really cool bookmark",
-        rating: 1
+        url: "facebook.com",
+        rating: 4
       }
 
-      return supertest(app)
-        .post('/bookmarks')
-        .set(headers)
-        .send(newBookmark)
-        .expect(400, {error: "POST failed"})
-    });
-    
-    it('responds with 400 and error msg if rating is not present', () => {
-      const newBookmark = {
-        title: "My new bookmark title",
-        description: "Really cool bookmark",
-        url: "facebook.com"
-      }
+      it(`responds with 400 and error message when ${field} is missing`, () => {
+        delete newBookmark[field];
 
-      return supertest(app)
-        .post('/bookmarks')
-        .set(headers)
-        .send(newBookmark)
-        .expect(400, {error: "POST failed"})
-    });
+        return supertest(app)
+          .post('/bookmarks')
+          .send(newBookmark)
+          .set(headers)
+          .expect(400, {
+            error: "POST failed"
+          })
+      });
+    })
   });
   
   describe('DELETE /articles/:id', () => {

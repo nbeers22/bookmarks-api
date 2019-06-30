@@ -18,8 +18,6 @@ bookmarkRouter
     const knexInstance = req.app.get('db');
     const newBookmark = { title, url, rating, description };
     
-    
-
     for (const [key, value] of Object.entries(newBookmark)) {
       if(value == null){
         logger.error(`POST to ${req.path} failed: ${key} missing`)
