@@ -1,6 +1,6 @@
 const knex = require('knex');
 const app = require('../src/app.js');
-const testBookmarks = require('./bookmarks.fixtures.js');
+const testBookmarks = require('./api/bookmarks.fixtures.js');
 
 describe.only('Bookmarks Endpoint', () => {
   let db;
@@ -28,7 +28,7 @@ describe.only('Bookmarks Endpoint', () => {
     db('bookmarks').truncate()
   ));
 
-  describe('GET /bookmarks', () => {
+  describe('GET /api/bookmarks', () => {
     
     context('Given bookmarks table has data', () => {
       
@@ -40,7 +40,7 @@ describe.only('Bookmarks Endpoint', () => {
 
       it('responds with 200 and list of all bookmarks in db', () => {
         return supertest(app)
-          .get('/bookmarks')
+          .get('/api/bookmarks')
           .set(headers)    
           .expect(200,testBookmarks)
       });
@@ -50,14 +50,14 @@ describe.only('Bookmarks Endpoint', () => {
 
       it('responds with status 200 and empty array', () => {
         return supertest(app)
-          .get('/bookmarks')
+          .get('/api/bookmarks')
           .set(headers)
           .expect(200,[])
       });
     });
   });
 
-  describe('GET /bookmarks/:id', () => {
+  describe('GET /api/bookmarks/:id', () => {
     
     context('Given article with corresponding id exists in database', () => {
 
@@ -70,7 +70,7 @@ describe.only('Bookmarks Endpoint', () => {
       it('responds with 200 and the article with the given id', () => {
         const articleId = 1;
         return supertest(app)
-          .get(`/bookmarks/${articleId}`)
+          .get(`/api/bookmarks/${articleId}`)
           .set(headers)
           .expect(200,testBookmarks[articleId - 1])
       })
@@ -81,7 +81,7 @@ describe.only('Bookmarks Endpoint', () => {
       it('responds with 404 and error message', () => {
         const articleId = 0;
         return supertest(app)
-          .get(`/bookmarks/${articleId}`)
+          .get(`/api/bookmarks/${articleId}`)
           .set(headers)
           .expect(404, { error: "Bookmark not found" } )
       });
@@ -104,7 +104,7 @@ describe.only('Bookmarks Endpoint', () => {
       
       it('removes XSS attack content', () => {
         return supertest(app)
-          .get(`/bookmarks/${maliciousArticle.id}`)
+          .get(`/api/bookmarks/${maliciousArticle.id}`)
           .set(headers)
           .expect(200)
           .expect(res => {
@@ -115,7 +115,7 @@ describe.only('Bookmarks Endpoint', () => {
     })
   });
   
-  describe('POST /articles', () => {
+  describe('POST /api/bookmarks', () => {
     
     it('Adds bookmark to the db, responds with 201 and new bookmark', () => {
       const newBookmark = {
@@ -126,7 +126,7 @@ describe.only('Bookmarks Endpoint', () => {
       }
 
       return supertest(app)
-        .post('/bookmarks')
+        .post('/api/bookmarks')
         .set(headers)
         .send(newBookmark)
         .expect(201)
@@ -138,7 +138,7 @@ describe.only('Bookmarks Endpoint', () => {
         })
         .then( postResponse => (
           supertest(app)
-            .get(`/bookmarks/${postResponse.body.id}`)
+            .get(`/api/bookmarks/${postResponse.body.id}`)
             .set(headers)
             .expect(postResponse.body)
         ))
@@ -158,7 +158,7 @@ describe.only('Bookmarks Endpoint', () => {
         delete newBookmark[field];
 
         return supertest(app)
-          .post('/bookmarks')
+          .post('/api/bookmarks')
           .send(newBookmark)
           .set(headers)
           .expect(400, {
@@ -176,7 +176,7 @@ describe.only('Bookmarks Endpoint', () => {
       }
 
       return supertest(app)
-        .post('/bookmarks')
+        .post('/api/bookmarks')
         .send(newBookmark)
         .set(headers)
         .expect(400, {
@@ -185,7 +185,7 @@ describe.only('Bookmarks Endpoint', () => {
     });
   });
   
-  describe('DELETE /bookmarks/:id', () => {
+  describe('DELETE /api/bookmarks/:id', () => {
     
     context('Given bookmark exists in db', () => {
 
@@ -200,12 +200,12 @@ describe.only('Bookmarks Endpoint', () => {
         const expectedBookmarks = testBookmarks.filter( bookmark => bookmark.id !== bookmarkId);
 
         return supertest(app)
-          .delete(`/bookmarks/${bookmarkId}`)
+          .delete(`/api/bookmarks/${bookmarkId}`)
           .set(headers)
           .expect(204)
           .then( res => (
             supertest(app)
-              .get('/bookmarks')
+              .get('/api/bookmarks')
               .set(headers)
               .expect(expectedBookmarks)
           ))
@@ -217,7 +217,7 @@ describe.only('Bookmarks Endpoint', () => {
       it('Responds with 404 and "Bookmark not found"', () => {
         const articleId = 0;
         return supertest(app)
-          .delete(`/bookmarks/${articleId}`)
+          .delete(`/api/bookmarks/${articleId}`)
           .set(headers)
           .expect(404, { error: "Bookmark not found" })
       });
