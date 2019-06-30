@@ -86,9 +86,35 @@ describe.only('Bookmarks Endpoint', () => {
           .expect(404, { error: "Bookmark not found" } )
       });
     });
+
+    context(`Given an XSS attack article`, () => {
+      const maliciousArticle = {
+        id: 911,
+        title: 'Naughty naughty very naughty <script>alert("xss");</script>',
+        url: 'http://www.hello.com',
+        description: `Bad image <img src="https://url.to.file.which/does-not.exist" onerror="alert(document.cookie);">. But not <strong>all</strong> bad.`,
+        rating: 5
+      }
+      
+      beforeEach('insert malicious article', () => {
+        return db
+          .into('bookmarks')
+          .insert([ maliciousArticle ])
+      })
+      
+      it('removes XSS attack content', () => {
+        return supertest(app)
+          .get(`/bookmarks/${maliciousArticle.id}`)
+          .expect(200)
+          .expect(res => {
+            expect(res.body.title).to.eql('Naughty naughty very naughty &lt;script&gt;alert(\"xss\");&lt;/script&gt;')
+            expect(res.body.description).to.eql(`Bad image <img src="https://url.to.file.which/does-not.exist">. But not <strong>all</strong> bad.`)
+          })
+      })
+    })
   });
   
-  describe.only('POST /articles', () => {
+  describe('POST /articles', () => {
     
     it('Adds bookmark to the db, responds with 201 and new bookmark', () => {
       const newBookmark = {
