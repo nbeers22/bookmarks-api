@@ -165,10 +165,27 @@ describe.only('Bookmarks Endpoint', () => {
             error: "POST failed"
           })
       });
-    })
+    });
+
+    it(`responds with 400 and error message when rating is not between 1 and 5`, () => {
+      const newBookmark = {
+        title: "My new bookmark title",
+        description: "Really cool bookmark",
+        url: "facebook.com",
+        rating: 44
+      }
+
+      return supertest(app)
+        .post('/bookmarks')
+        .send(newBookmark)
+        .set(headers)
+        .expect(400, {
+          error: "POST failed"
+        })
+    });
   });
   
-  describe.only('DELETE /bookmarks/:id', () => {
+  describe('DELETE /bookmarks/:id', () => {
     
     context('Given bookmark exists in db', () => {
 
@@ -188,7 +205,7 @@ describe.only('Bookmarks Endpoint', () => {
           .expect(204)
           .then( res => (
             supertest(app)
-              .get('/articles')
+              .get('/bookmarks')
               .set(headers)
               .expect(expectedBookmarks)
           ))
