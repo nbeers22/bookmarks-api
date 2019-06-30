@@ -1,6 +1,6 @@
 const knex = require('knex');
 const app = require('../src/app.js');
-const testBookmarks = require('./api/bookmarks.fixtures.js');
+const testBookmarks = require('./bookmarks.fixtures.js');
 
 describe.only('Bookmarks Endpoint', () => {
   let db;
