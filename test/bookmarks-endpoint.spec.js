@@ -105,6 +105,7 @@ describe.only('Bookmarks Endpoint', () => {
       it('removes XSS attack content', () => {
         return supertest(app)
           .get(`/bookmarks/${maliciousArticle.id}`)
+          .set(headers)
           .expect(200)
           .expect(res => {
             expect(res.body.title).to.eql('Naughty naughty very naughty &lt;script&gt;alert(\"xss\");&lt;/script&gt;')

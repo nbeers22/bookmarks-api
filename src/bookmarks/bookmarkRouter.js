@@ -71,7 +71,7 @@ bookmarkRouter
           logger.error(`Bookmark not found at ${req.path}`);
           return res.status(404).json({error: "Bookmark not found"});
         }
-        res.status(200).json({success: `Bookmark ${id} Deleted`});
+        res.status(204).json({success: `Bookmark ${id} Deleted`});
       })
     
   });
