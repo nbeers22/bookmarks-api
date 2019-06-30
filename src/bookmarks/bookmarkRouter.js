@@ -27,6 +27,13 @@ bookmarkRouter
         })
       }
     }
+
+    if(rating < 1 || rating > 5){
+      logger.error(`POST to ${req.path} failed: rating must be between 1 and 5`);
+      return res.status(400).json({
+        error: "POST failed"
+      })
+    }
     
     const bookmark = {
       title,
@@ -42,7 +49,7 @@ bookmarkRouter
 
 bookmarkRouter
   .route('/bookmarks/:id')
-  .get( (req,res) => {
+  .get( (req,res,next) => {
     const { id } = req.params;
     const knexInstance = req.app.get('db');
 
@@ -60,8 +67,9 @@ bookmarkRouter
           rating: bookmark.rating
         });
       })
+      .catch(next)
   })
-  .delete( (req,res) => {
+  .delete( (req,res,next) => {
     const { id } = req.params;
     const knexInstance = req.app.get('db');
     
@@ -71,9 +79,9 @@ bookmarkRouter
           logger.error(`Bookmark not found at ${req.path}`);
           return res.status(404).json({error: "Bookmark not found"});
         }
-        res.status(204).json({success: `Bookmark ${id} Deleted`});
+        res.status(204).end()
       })
-    
+      .catch(next)
   });
 
 module.exports = bookmarkRouter;

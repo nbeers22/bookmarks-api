@@ -168,9 +168,9 @@ describe.only('Bookmarks Endpoint', () => {
     })
   });
   
-  describe('DELETE /articles/:id', () => {
+  describe.only('DELETE /bookmarks/:id', () => {
     
-    context('Given article exists in db', () => {
+    context('Given bookmark exists in db', () => {
 
       beforeEach('Insert test bookmarks into the db', () => {
         return db
@@ -178,12 +178,20 @@ describe.only('Bookmarks Endpoint', () => {
           .insert(testBookmarks)
       });
 
-      it('Deletes bookmark from the db, responds with 200 and deleted bookmark', () => {
-        const articleId = 1;
+      it('Deletes bookmark from the db, responds with 204 and deleted bookmark', () => {
+        const bookmarkId = 1;
+        const expectedBookmarks = testBookmarks.filter( bookmark => bookmark.id !== bookmarkId);
+
         return supertest(app)
-          .delete(`/bookmarks/${articleId}`)
+          .delete(`/bookmarks/${bookmarkId}`)
           .set(headers)
-          .expect(200, )
+          .expect(204)
+          .then( res => (
+            supertest(app)
+              .get('/articles')
+              .set(headers)
+              .expect(expectedBookmarks)
+          ))
       });
     })
     
