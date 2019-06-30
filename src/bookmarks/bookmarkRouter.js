@@ -1,4 +1,5 @@
 const express = require('express');
+const xss = require('xss');
 const bookmarkRouter = express.Router();
 const bodyParser = express.json();
 const logger = require('../logger.js');
@@ -51,7 +52,13 @@ bookmarkRouter
           logger.error(`Bookmark not found at ${req.path}`);
           return res.status(404).json({error: "Bookmark not found"});
         }
-        res.status(200).json(bookmark);
+        res.status(200).json({
+          id: bookmark.id,
+          title: xss(bookmark.title),
+          description: xss(bookmark.description),
+          url: bookmark.url,
+          rating: bookmark.rating
+        });
       })
   })
   .delete( (req,res) => {
