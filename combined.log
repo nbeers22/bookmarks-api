@@ -20,3 +20,15 @@
 {"message":"POST to /bookmarks failed: Title missing","level":"error"}
 {"message":"POST to /bookmarks failed: Title missing","level":"error"}
 {"message":"POST to /bookmarks failed: Title missing","level":"error"}
+{"message":"POST to /bookmarks failed: Title missing","level":"error"}
+{"message":"POST to /bookmarks failed: Title missing","level":"error"}
+{"message":"POST to /bookmarks failed: url missing","level":"error"}
+{"message":"POST to /bookmarks failed: Title missing","level":"error"}
+{"message":"POST to /bookmarks failed: url missing","level":"error"}
+{"message":"POST to /bookmarks failed: rating missing","level":"error"}
+{"message":"POST to /bookmarks failed: title missing","level":"error"}
+{"message":"POST to /bookmarks failed: url missing","level":"error"}
+{"message":"POST to /bookmarks failed: rating missing","level":"error"}
+{"message":"POST to /bookmarks failed: title missing","level":"error"}
+{"message":"POST to /bookmarks failed: url missing","level":"error"}
+{"message":"POST to /bookmarks failed: rating missing","level":"error"}

@@ -130,6 +130,34 @@ describe.only('Bookmarks Endpoint', () => {
         .send(newBookmark)
         .expect(400, {error: "POST failed"})
     });
+    
+    it('responds with 400 and error msg if url is not present', () => {
+      const newBookmark = {
+        title: "My new bookmark title",
+        description: "Really cool bookmark",
+        rating: 1
+      }
+
+      return supertest(app)
+        .post('/bookmarks')
+        .set(headers)
+        .send(newBookmark)
+        .expect(400, {error: "POST failed"})
+    });
+    
+    it('responds with 400 and error msg if rating is not present', () => {
+      const newBookmark = {
+        title: "My new bookmark title",
+        description: "Really cool bookmark",
+        url: "facebook.com"
+      }
+
+      return supertest(app)
+        .post('/bookmarks')
+        .set(headers)
+        .send(newBookmark)
+        .expect(400, {error: "POST failed"})
+    });
   });
   
   describe('DELETE /articles/:id', () => {

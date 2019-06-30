@@ -16,18 +16,17 @@ bookmarkRouter
   .post( bodyParser, (req,res,next) => {
     const { title, url, rating, description = '' } = req.body;
     const knexInstance = req.app.get('db');
+    const newBookmark = { title, url, rating, description };
     
-    if (!title) {
-      logger.error(`POST to ${req.path} failed: Title missing`)
-      return res.status(400).json({error: "POST failed"})
-    }
-    if (!url) {
-      logger.error(`POST to ${req.path} failed: url missing`)
-      return res.status(400).json({error: "POST failed"})
-    }
-    if (!rating) {
-      logger.error(`POST to ${req.path} failed: rating missing`)
-      return res.status(400).json({error: "POST failed"})
+    
+
+    for (const [key, value] of Object.entries(newBookmark)) {
+      if(value == null){
+        logger.error(`POST to ${req.path} failed: ${key} missing`)
+        return res.status(400).json({
+          error: "POST failed"
+        })
+      }
     }
     
     const bookmark = {
@@ -54,7 +53,7 @@ bookmarkRouter
           logger.error(`Bookmark not found at ${req.path}`);
           return res.status(404).json({error: "Bookmark not found"});
         }
-        res.json(200,bookmark);
+        res.status(200).json(bookmark);
       })
   })
   .delete( (req,res) => {
