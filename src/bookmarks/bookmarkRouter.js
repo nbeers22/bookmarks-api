@@ -83,15 +83,12 @@ bookmarkRouter
       .catch(next)
   })
   .patch( bodyParser, (req,res,next) => {
-    const newData = {};
-    const fields = ['title', 'url', 'rating', 'description'];
-    fields.forEach( field => {
-      if(req.body[field])
-        newData[field] = req.body[field]
-    });
-    if(Object.keys(newData).length === 0){
-      logger.error(`Bookmark not updated ${req.path}. Must contain one of title, url, rating, or description to update`);
-      return res.status(400).json({ error: "PATCH failed" });
+    const { title, description, url, rating } = req.body;
+    const newData = { title, description, url, rating };
+    const numberOfValues = Object.values(newData).filter(Boolean).length
+    if (numberOfValues === 0) {
+      logger.error("Request body must content either 'title', 'style' or 'content'");
+      return res.status(400).json({ error: `PATCH failed` });
     }
     BookmarksService.updateBookmark(req.knex,req.id,newData)
       .then( bookmark => {
@@ -99,8 +96,9 @@ bookmarkRouter
           logger.error(`Bookmark not found at ${req.path}`);
           return res.status(404).json({error: "Bookmark not found"});
         }
-        res.status(204)
+        res.status(204).json(bookmark);
       })
+      .catch(next)
   });
 
 module.exports = bookmarkRouter;

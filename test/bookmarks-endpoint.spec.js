@@ -2,7 +2,7 @@ const knex = require('knex');
 const app = require('../src/app.js');
 const testBookmarks = require('./bookmarks.fixtures.js');
 
-describe.only('Bookmarks Endpoint', () => {
+describe('Bookmarks Endpoint', () => {
   let db;
   const headers = {
     Authorization: 'Bearer abcd12345'
@@ -215,12 +215,66 @@ describe.only('Bookmarks Endpoint', () => {
     context('Given article does not exists in db', () => {
 
       it('Responds with 404 and "Bookmark not found"', () => {
-        const articleId = 0;
+        const bookmarkId = 0;
         return supertest(app)
-          .delete(`/api/bookmarks/${articleId}`)
+          .delete(`/api/bookmarks/${bookmarkId}`)
           .set(headers)
           .expect(404, { error: "Bookmark not found" })
       });
     })
   });
+
+  describe.only('PATCH /api/bookmarks/:id', () => {
+    context('Given bookmark not found', () => {
+      it('responds with 404', () => {
+        const bookmarkId = 0;
+        const newData = {
+          title: 'New Title Yo!'
+        }
+        return supertest(app)
+          .patch(`/api/bookmarks/${bookmarkId}`)
+          .set(headers)
+          .send(newData)
+          .expect(404, { error: "Bookmark not found" })
+      });
+    });
+
+    context('Given article exists in database', () => {
+      beforeEach('insert articles', () => {
+        return db
+          .into('bookmarks')
+          .insert(testBookmarks)
+        })
+
+        it('responds with 204 and updates the bookmark data', () => {
+          const bookmarkId = 1;
+          const newData = {
+            title: "New Title",
+            url: "http://newurl.com"
+          };
+          const expectedBookmark = {
+            ...testBookmarks[bookmarkId - 1],
+            ...newData
+          }
+          return supertest(app)
+            .patch(`/api/bookmarks/${bookmarkId}`)
+            .set(headers)
+            .send(newData)
+            .expect(204)
+        });
+
+        it('responds with 400 when no required fields are supplied', () => {
+          const bookmarkId = 1;
+          const newData = {
+            hey: "hey there"
+          }
+          return supertest(app)
+            .patch(`/api/bookmarks/${bookmarkId}`)
+            .set(headers)
+            .send(newData)
+            .expect(400, { error: "PATCH failed" })
+        });
+    });
+  });
+  
 });

@@ -92,3 +92,26 @@
 {"message":"POST to /api/bookmarks failed: rating missing","level":"error"}
 {"message":"POST to /api/bookmarks failed: rating must be between 1 and 5","level":"error"}
 {"message":"Bookmark not found at /api/bookmarks/0","level":"error"}
+{"message":"Bookmark not updated /api/bookmarks/0. Must contain one of title, url, rating, or description to update","level":"error"}
+{"message":"Bookmark not updated /api/bookmarks/0. Must contain one of title, url, rating, or description to update","level":"error"}
+{"message":"Unauthorized request to path /api/bookmarks/1","level":"error"}
+{"message":"Unauthorized request to path /api/bookmarks/1","level":"error"}
+{"message":"Unauthorized request to path /api/bookmarks/1","level":"error"}
+{"message":"Unauthorized request to path /api/bookmarks/1","level":"error"}
+{"message":"Unauthorized request to path /api/bookmarks/1","level":"error"}
+{"message":"Unauthorized request to path /api/bookmarks/1","level":"error"}
+{"message":"Unauthorized request to path /api/bookmarks/1","level":"error"}
+{"message":"Request body must content either 'title', 'style' or 'content'","level":"error"}
+{"message":"Request body must content either 'title', 'style' or 'content'","level":"error"}
+{"message":"Bookmark not found at /api/bookmarks/0","level":"error"}
+{"message":"Request body must content either 'title', 'style' or 'content'","level":"error"}
+{"message":"Bookmark not found at /api/bookmarks/0","level":"error"}
+{"message":"Request body must content either 'title', 'style' or 'content'","level":"error"}
+{"message":"Bookmark not found at /api/bookmarks/0","level":"error"}
+{"message":"Request body must content either 'title', 'style' or 'content'","level":"error"}
+{"message":"Bookmark not found at /api/bookmarks/0","level":"error"}
+{"message":"Request body must content either 'title', 'style' or 'content'","level":"error"}
+{"message":"Bookmark not found at /api/bookmarks/0","level":"error"}
+{"message":"Request body must content either 'title', 'style' or 'content'","level":"error"}
+{"message":"Bookmark not found at /api/bookmarks/0","level":"error"}
+{"message":"Request body must content either 'title', 'style' or 'content'","level":"error"}
