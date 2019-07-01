@@ -82,14 +82,24 @@ bookmarkRouter
       })
       .catch(next)
   })
-  .patch( (req,res,next) => {
-    // Finish this
-    BookmarksService.updateBookmark(req.knex,req.id)
+  .patch( bodyParser, (req,res,next) => {
+    const newData = {};
+    const fields = ['title', 'url', 'rating', 'description'];
+    fields.forEach( field => {
+      if(req.body[field])
+        newData[field] = req.body[field]
+    });
+    if(Object.keys(newData).length === 0){
+      logger.error(`Bookmark not updated ${req.path}. Must contain one of title, url, rating, or description to update`);
+      return res.status(400).json({ error: "PATCH failed" });
+    }
+    BookmarksService.updateBookmark(req.knex,req.id,newData)
       .then( bookmark => {
         if(!bookmark){
           logger.error(`Bookmark not found at ${req.path}`);
           return res.status(404).json({error: "Bookmark not found"});
         }
+        res.status(204)
       })
   });
 
