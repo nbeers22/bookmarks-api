@@ -246,34 +246,34 @@ describe('Bookmarks Endpoint', () => {
           .insert(testBookmarks)
         })
 
-        it('responds with 204 and updates the bookmark data', () => {
-          const bookmarkId = 1;
-          const newData = {
-            title: "New Title",
-            url: "http://newurl.com"
-          };
-          const expectedBookmark = {
-            ...testBookmarks[bookmarkId - 1],
-            ...newData
-          }
-          return supertest(app)
-            .patch(`/api/bookmarks/${bookmarkId}`)
-            .set(headers)
-            .send(newData)
-            .expect(204)
-        });
+      it('responds with 204 and updates the bookmark data', () => {
+        const bookmarkId = 1;
+        const newData = {
+          title: "New Title",
+          url: "http://newurl.com"
+        };
+        const expectedBookmark = {
+          ...testBookmarks[bookmarkId - 1],
+          ...newData
+        }
+        return supertest(app)
+          .patch(`/api/bookmarks/${bookmarkId}`)
+          .set(headers)
+          .send(newData)
+          .expect(204)
+      });
 
-        it('responds with 400 when no required fields are supplied', () => {
-          const bookmarkId = 1;
-          const newData = {
-            hey: "hey there"
-          }
-          return supertest(app)
-            .patch(`/api/bookmarks/${bookmarkId}`)
-            .set(headers)
-            .send(newData)
-            .expect(400, { error: "PATCH failed" })
-        });
+      it('responds with 400 when no required fields are supplied', () => {
+        const bookmarkId = 1;
+        const newData = {
+          hey: "hey there"
+        }
+        return supertest(app)
+          .patch(`/api/bookmarks/${bookmarkId}`)
+          .set(headers)
+          .send(newData)
+          .expect(400, { error: "PATCH failed" })
+      });
     });
   });
   

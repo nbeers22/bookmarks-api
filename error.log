@@ -115,3 +115,8 @@
 {"message":"Request body must content either 'title', 'style' or 'content'","level":"error"}
 {"message":"Bookmark not found at /api/bookmarks/0","level":"error"}
 {"message":"Request body must content either 'title', 'style' or 'content'","level":"error"}
+{"message":"Bookmark not found at /api/bookmarks/0","level":"error"}
+{"message":"Request body must content either 'title', 'style' or 'content'","level":"error"}
+{"message":"Unauthorized request to path /api/bookmarks/2","level":"error"}
+{"message":"Bookmark not found at /api/bookmarks/0","level":"error"}
+{"message":"Request body must content either 'title', 'style' or 'content'","level":"error"}
