@@ -6,7 +6,7 @@ const logger = require('../logger.js');
 const BookmarksService = require('./bookmarks-service.js');
 
 bookmarkRouter
-  .route('/bookmarks')
+  .route('/api/bookmarks')
   .get( (req,res,next) => {
     const knexInstance = req.app.get('db');
     
@@ -48,12 +48,14 @@ bookmarkRouter
   });
 
 bookmarkRouter
-  .route('/bookmarks/:id')
+  .route('/api/bookmarks/:id')
+  .all( (req,res,next) => {
+    req.knex = req.app.get('db');
+    req.id = req.params.id;
+    next();
+  })
   .get( (req,res,next) => {
-    const { id } = req.params;
-    const knexInstance = req.app.get('db');
-
-    BookmarksService.getById(knexInstance,id)
+    BookmarksService.getById(req.knex,req.id)
       .then(bookmark => {
         if (!bookmark) {
           logger.error(`Bookmark not found at ${req.path}`);
@@ -70,10 +72,7 @@ bookmarkRouter
       .catch(next)
   })
   .delete( (req,res,next) => {
-    const { id } = req.params;
-    const knexInstance = req.app.get('db');
-    
-    BookmarksService.deleteBookmark(knexInstance,id)
+    BookmarksService.deleteBookmark(req.knex,req.id)
       .then(bookmark => {
         if(!bookmark){
           logger.error(`Bookmark not found at ${req.path}`);
@@ -82,6 +81,16 @@ bookmarkRouter
         res.status(204).end()
       })
       .catch(next)
+  })
+  .patch( (req,res,next) => {
+    // Finish this
+    BookmarksService.updateBookmark(req.knex,req.id)
+      .then( bookmark => {
+        if(!bookmark){
+          logger.error(`Bookmark not found at ${req.path}`);
+          return res.status(404).json({error: "Bookmark not found"});
+        }
+      })
   });
 
 module.exports = bookmarkRouter;
