@@ -19,6 +19,8 @@ const validateBearerToken = (req,res,next) => {
   const apiToken = process.env.API_TOKEN || API_TOKEN;
 
   if(!bearerToken || bearerToken.split(" ")[1] !== apiToken){
+    console.log(bearerToken)
+    console.log(apiToken)
     logger.error("Unauthorized request to path " + req.path);
     return res
       .status(401)
@@ -29,10 +31,10 @@ const validateBearerToken = (req,res,next) => {
   next();
 }
 
+app.use(cors());
 app.use(validateBearerToken);
 app.use(morgan(morganSetting));
 app.use(helmet());
-app.use(cors());
 app.use(express.json());
 app.use(bookmarkRouter);
 
